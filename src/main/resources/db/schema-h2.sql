@@ -1,0 +1,49 @@
+DROP TABLE IF EXISTS user;
+CREATE TABLE user
+(
+	id VARCHAR(20) NOT NULL COMMENT '主键ID',
+	name VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
+    pwd VARCHAR(50) NULL DEFAULT NULL COMMENT '密码',
+    phone VARCHAR(50) NULL DEFAULT NULL COMMENT '手机号',
+	PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS invite_code;
+CREATE TABLE invite_code
+(
+    code VARCHAR(36) NOT NULL COMMENT '邀请码',
+    count INT(100) NULL DEFAULT NULL COMMENT '次数',
+    PRIMARY KEY (code)
+);
+
+DROP TABLE IF EXISTS remind;
+CREATE TABLE remind
+(
+    id VARCHAR(20) NOT NULL COMMENT '主键ID',
+    userid VARCHAR(20) NOT NULL COMMENT '用户ID',
+    createdate DATETIME NULL DEFAULT NULL COMMENT '创建时间',
+    reminddate DATETIME NULL DEFAULT NULL COMMENT '提醒时间',
+    type VARCHAR(20) NULL DEFAULT NULL COMMENT '提醒类型，1微信2短信，逗号分隔',
+    strategy VARCHAR(20) NULL DEFAULT '0' COMMENT '提醒策略，0默认，其他自定义',
+    desc VARCHAR(100) NULL DEFAULT NULL COMMENT '提醒内容',
+    PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS remind_job;
+CREATE TABLE remind_job
+(
+    id VARCHAR(20) NOT NULL COMMENT '主键ID',
+    remindid VARCHAR(20) NOT NULL COMMENT '提醒ID',
+    date DATETIME NULL DEFAULT NULL COMMENT '时间',
+    PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS calendar;
+CREATE TABLE calendar
+(
+    date VARCHAR(10) NOT NULL COMMENT '日期',
+    lunar VARCHAR(10) NOT NULL COMMENT '农历',
+    solarterms VARCHAR(10) NULL DEFAULT NULL COMMENT '节气',
+    PRIMARY KEY (date)
+);
+

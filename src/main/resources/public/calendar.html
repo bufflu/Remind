@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../remind.ico">
+
+    <title>日历</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/navbar.css" rel="stylesheet">
+
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script src="/static/js/echarts.min.js" type="text/javascript"></script>
+
+    <style>
+        /*body{ text-align:center}*/
+        .div{ margin: 50px auto 0px; width: 500px; /*border:1px solid #F00*/}
+        /* css注释：为了观察效果设置宽度 边框 高度等样式 */
+        .main{ margin-top: 0px; width:100%;height:800px;}
+    </style>
+</head>
+
+<body>
+
+    <!-- start -- 点赞和反馈 -->
+    <div class="gxl-side-toolbar">
+        <a class="option-box" id="ob1">
+            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+        </a>
+        <a class="option-box" id="ob2">
+            <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="show-txt" style="bottom: 244px" id="ob1-show">
+        <h5>赞</h5>
+    </div>
+    <div class="show-txt" style="width: 200px" id="ob2-show">
+        <h5>反馈问题，请发送邮箱 gxl_0014233077@163com</h5>
+    </div>
+    <!-- end -->
+
+    <div class="div">
+    <ul class="nav nav-pills">
+        <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <span id="nowMonth">2019-06</span>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" id="otherMonth">
+            </ul>
+        </li>
+        <li>
+            <h5 style="color: #2aabd2"><span style="width: 120px; margin-left: 100px"></span>欢迎 [<span id="username" style="color: #d9534f"></span>] 点击日期来 添加/查看 提醒事项</h5>
+        </li>
+    </ul>
+
+    <div id="main" class="main"></div>
+    </div>
+</body>
+<script>
+
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: "/calendar/list",
+            async: false,
+            dataType: "json",
+            success: function(result) {
+                if (result.success) {
+                    var data = result.data;
+                    f(data, 0);
+                    setUsername(result.username);
+                } else {
+                    alert(result.message);
+                }
+            },
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/calendar/getMonth",
+            async: false,
+            dataType: "json",
+            success: function(result) {
+                if (result.success) {
+                    var data = result.data;
+                    var li = "";
+                    for (var i = 0; i < data.length; i++) {
+                        li += "<li><a href='javascript: void(0)' onclick='change(this)'>" + data[i] + "</a></li>"
+                    }
+                    $("#otherMonth").append(li);
+                    $("#nowMonth").text(data[0]);
+
+                } else {
+                    alert(result.message);
+                }
+            }
+        });
+
+    });
+
+    function setUsername(username) {
+        $("#username").html(username);
+    }
+
+    // 获取cookie
+    function getCookie(cookieObj, key) {
+        console.log("cookobj " + cookieObj);
+        console.log("cookkey " + key);
+        var cookies = cookieObj ? cookieObj.split('; ') : [];
+        for (var i = 0, l = cookies.length; i < l; i++) {
+            var parts = cookies[i].split('=');
+            if(parts[0] == key) {
+                return parts[i].trim();
+            }
+        }
+        return "";
+    }
+
+    function change(param) {
+        var p = param.text;
+        $.ajax({
+            type: "GET",
+            url: "/calendar/list",
+            async: false,
+            dataType: "json",
+            data: "date=" + param.text,
+            success: function(result) {
+                if (result.success) {
+                    var data = result.data;
+                    f(data, 1);
+                    $("#nowMonth").text(param.text);
+                } else {
+                    alert(result.message);
+                }
+            }
+        });
+    }
+
+    function f(data, flag) {
+        var heatmapData = [];
+        var aData = [];
+        for (var i = 0; i < data.length; i++) {
+            heatmapData.push([data[i][0], data[i][2]]);
+            aData.push([data[i][0],1,data[i][1]]);
+        }
+        var nowmonth = data[0][0].substr(0,7);
+
+    var myChart = echarts.init(document.getElementById('main'));
+    var option = {
+        tooltip: {
+            formatter: function (params) {
+                return params.value[1] + '个提醒';
+            }
+        },
+
+        visualMap: {
+            show: false,
+            min: 0,
+            max: 10,
+            calculable: true,
+            seriesIndex: [1],
+            orient: 'horizontal',
+            left: 'center',
+            bottom: 20,
+            inRange: {
+                color: ['#e0ffff', '#006edd'],
+                opacity: 0.8
+            },
+            controller: {
+                inRange: {
+                    opacity: 0.6
+                }
+            }
+        },
+        calendar: {
+            // 分割线
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: '#243E35',
+                    width: 2,
+                    type: 'solid'
+                }
+            },
+            itemStyle: {
+                borderColor: '#BFC9CC',
+                borderWidth: 1
+            },
+            left: 'center',
+            top: '20%' ,
+            // 单元格大小
+            cellSize: [70, 70],
+            // 设置时间的范围，可支持某年、某月、某天，还可支持跨年
+            range: nowmonth,
+            // 设置坐标方向  vertical垂直
+            orient: 'vertical',
+            yearLabel: {show: false},
+            monthLabel: {show: false},
+            dayLabel: {
+                firstDay: 0,
+                nameMap: 'cn'
+            }
+        },
+        series: [{
+            type: 'scatter',
+            coordinateSystem: 'calendar',
+            symbolSize: 1,
+            label: {
+                normal: {
+                    show: true,
+                    formatter: function (params) {
+                        var d = echarts.number.parseDate(params.value[0]);
+                        return '\n' + d.getDate() + '\n\n' + params.value[2] + '\n\n';
+                    },
+                    textStyle: {
+                        //fontFamily: 'Microsoft YaHei',
+                        //fontSize: 14,
+                        color: '#000'
+                    }
+                }
+            },
+            data: aData
+        }, {
+            type: 'heatmap',
+            coordinateSystem: 'calendar',
+            data: heatmapData
+        }]
+    }
+    myChart.setOption(option);
+    if (flag == 0) { // 解决切换月份多次绑定问题
+        myChart.on('click', function (params) {
+            //alert(params.value[0]);
+            window.location.href = "/list.html?date=" + params.value[0];
+        })
+    }
+
+    }
+
+
+
+    // start
+    $("#ob1").mousemove(function () {
+        $("#ob1-show").show();
+    });
+    $("#ob2").mousemove(function () {
+        $("#ob2-show").show();
+    });
+    $("#ob1").mouseout(function () {
+        $("#ob1-show").hide();
+    });
+    $("#ob2").mouseout(function () {
+        $("#ob2-show").hide();
+    });
+</script>
+</html>

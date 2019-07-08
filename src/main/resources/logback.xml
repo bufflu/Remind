@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+	<property name="LOG_SYSTEM" value="remind" />
+	<property name="LOG_HOME" value="/mnt/logs/${LOG_SYSTEM}" />
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %X{X-B3-TraceId:-}-%X{X-B3-SpanId:-} %level ${LOG_SYSTEM} [%logger{100}_%M] - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 默认日志文件 -->
+	<appender name="logAopAppender"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/default.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<FileNamePattern>${LOG_HOME}/default-%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>500MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<!--日志文件保留天数 -->
+			<MaxHistory>15</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level %thread - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="HandleAppender"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/handle.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<FileNamePattern>${LOG_HOME}/handle-%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>500MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<!--日志文件保留天数 -->
+			<MaxHistory>15</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level %thread - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="JobAppender"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/job.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<FileNamePattern>${LOG_HOME}/job-%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>500MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<!--日志文件保留天数 -->
+			<MaxHistory>15</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level %thread - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+
+	<!-- 默认日志 -->
+	<logger name="com.frog.RemindQing.common.RemindLogAOP"  additivity="false">
+        <appender-ref ref="STDOUT" />
+		<appender-ref ref="logAopAppender" />
+	</logger>
+
+	<!-- 摘要日志 -->
+	<logger name="com.frog.RemindQing.common.RemindExceptionHandle"  additivity="false">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="HandleAppender" />
+	</logger>
+
+	<!-- 审计日志 -->
+	<logger name="com.frog.RemindQing.job"  additivity="false">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="JobAppender" />
+	</logger>
+
+
+	<!-- 日志输出级别 DEBUG INFO ERROR  -->	
+	<root level="${LOG_LEVEL:-INFO}">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="logAopAppender" />
+		<appender-ref ref="HandleAppender" />
+		<appender-ref ref="JobAppender" />
+	</root>
+
+</configuration>

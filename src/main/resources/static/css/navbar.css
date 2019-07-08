@@ -1,0 +1,65 @@
+.navbar {
+    max-width: 334px;
+    padding: 0px;
+    margin: 0 auto;
+}
+
+.mydropdown {
+    max-width: 100px;
+    padding: 5px;
+    margin-top: 50px;
+}
+
+.gxl-side-toolbar {
+    position: fixed;
+    right: 8px;
+    bottom: 200px;
+    width: 44px;
+    z-index: 1999;
+}
+
+.gxl-side-toolbar a.option-box {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+    background-color: #fff;
+    text-align: center;
+    height: 44px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.show-txt {
+    position: fixed;
+    right: 54px;
+    bottom: 200px;
+    width: 44px;
+    z-index: 1999;
+
+    display: none;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+    background-color: #fff;
+    text-align: center;
+    height: 44px;
+    cursor: pointer;
+}
