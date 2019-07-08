@@ -4,23 +4,23 @@
 
 ## 展示
 ### 1. 登录
-![login](/img/login.png)
+![login](https://github.com/bufflu/Remind/blob/master/img/login.png)
 
 ### 2. 注册
-![register](/img/register.png)
+![register](https://github.com/bufflu/Remind/blob/master/img/register.png)
 
 ### 3. 日历
-![calendar](/img/calendar.png)
+![calendar](https://github.com/bufflu/Remind/blob/master/img/calendar.png)
 
 ### 4. 提醒列表
-![remind](/img/remindlist.png)
+![remind](https://github.com/bufflu/Remind/blob/master/img/remindlist.png)
 
 ## 说明
 ### 1. 开发
 项目后端使用Java8+SpringBoot2.1.6+MybatisPlus3.1.2开发，前端使用Html+Ajax，数据库使用H2。
 
 ### 2. 模块划分
-![model](/img/model2.png)
+![model](https://github.com/bufflu/Remind/blob/master/img/model2.png)
 
 项目目前分为登录(Login)、用户(User)、日历(Calendar)、提醒(Remind)、提醒列表操作(Handle)、推送(Send)主要模块。
 
@@ -61,4 +61,5 @@ public interface PushListHandle {
 ```
 
 **CustomConfig**
+
 实现LoginService和PushListHandle接口后可以在此配置类中替换掉原有的默认实现。
