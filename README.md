@@ -17,7 +17,7 @@
 
 ## 说明
 ### 1. 开发
-项目后端使用Java8+SpringBoot2.1.6+MybatisPlus3.1.2开发，前端使用Html+Ajax，数据库使用H2。
+项目后端使用Java8+SpringBoot2.1.6+MybatisPlus3.1.2开发，前端使用Html+Ajax+Echars，数据库使用H2。
 
 ### 2. 模块划分
 ![model](https://github.com/bufflu/Remind/blob/master/img/model2.png)
