@@ -26,10 +26,11 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String username = (String)request.getSession().getAttribute(Constant.USERNAME);
         Integer token = (Integer)request.getSession().getAttribute(Constant.TOKEN);
+        String userType = (String)request.getSession().getAttribute(Constant.USERTYPE);
         if (StringUtils.isEmpty(username) || token == null) {
             return false;
         } else {
-            return loginServie.checkLoginStatus(username, token);
+            return loginServie.checkLoginStatus(username, token, userType);
         }
     }
 }

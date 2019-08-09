@@ -18,4 +18,6 @@ public interface LoginService {
     boolean checkLoginStatus(Object... objects);
 
     User getSessionUser(HttpServletRequest request);
+
+    void loginAuth(Object data);
 }

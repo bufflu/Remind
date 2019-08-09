@@ -34,7 +34,7 @@ public class RemindPushJob {
     @Autowired
     private PushListHandle pushHandle;
 
-    @Scheduled(initialDelay = 60 * 1000, fixedDelay = 60000)
+    @Scheduled(initialDelay = 100 * 60 * 1000, fixedDelay = 60000)
     public void push() {
         LocalDateTime now = LocalDateTime.now();
         List<String> remindIdList = remindJobMapper.selectList(new QueryWrapper<RemindJob>().lt("date", now))

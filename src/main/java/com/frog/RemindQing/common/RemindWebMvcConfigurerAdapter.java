@@ -36,6 +36,7 @@ public class RemindWebMvcConfigurerAdapter implements WebMvcConfigurer {
         excludePathList.add("/js/*");
         excludePathList.add("/ico/*");
         excludePathList.add("/**/*.html");
+        excludePathList.add("/oauth/**");
         registry.addInterceptor(interceptor).addPathPatterns("/**").excludePathPatterns(excludePathList);
     }
 

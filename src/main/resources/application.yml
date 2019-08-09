@@ -16,3 +16,14 @@ mybatis-plus:
 
 server:
   port: 10000
+
+justauth:
+  enabled: true
+  type:
+    GITHUB:
+      clientId: 81ca1fa6b5a*******
+      clientSecret: 1b9261eea907a5cd344*************
+      redirectUri: http://127.0.0.1:10000/oauth/callback/github
+
+
+

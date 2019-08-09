@@ -4,6 +4,8 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * ClassName: SessionUtil
  * Description: desc
@@ -22,5 +24,15 @@ public class SessionUtil {
             }
         } catch (Exception e) {}
         return value;
+    }
+
+    public static HttpServletRequest getHttpServletRequest() {
+        try {
+            RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+            if (requestAttributes != null) {
+                return  ((ServletRequestAttributes) requestAttributes).getRequest();
+            }
+        } catch (Exception e) {}
+        return null;
     }
 }
